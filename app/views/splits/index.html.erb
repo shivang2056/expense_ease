@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Splits</h1>
+
+<div id="splits">
+  <% @splits.each do |split| %>
+    <%= render split %>
+    <p>
+      <%= link_to "Show this split", split %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New split", new_split_path %>

@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @split %>
+
+<div>
+  <%= link_to "Edit this split", edit_split_path(@split) %> |
+  <%= link_to "Back to splits", splits_path %>
+
+  <%= button_to "Destroy this split", @split, method: :delete %>
+</div>
