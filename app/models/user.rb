@@ -6,4 +6,6 @@ class User < ApplicationRecord
 
   has_many :expenses
   has_many :splits
+
+  scope :by_name, -> (name) { where('name ILIKE ?', "%#{name}%") }
 end

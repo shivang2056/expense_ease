@@ -1,9 +1,121 @@
-<h1>New expense</h1>
+<%= turbo_frame_tag :remote_modal do %>
+  <dialog id="new_expense_modal" aria-labelledby="modal_title" data-controller="remote-modal" class="min-h-[700px] w-[600px] border border-gray-700 rounded shadow-md">
+    <div class="flex flex-col">
+      <div class="bg-gray-200 text-gray-800 p-2 w-full">
+        <h2 id="modal_title" class="inline-block">Add an Expense</h2>
+        <form method="dialog" class="inline-block float-right">
+          <button aria-label="close">X</button>
+        </form>
+      </div>
 
-<%= render "form", expense: @expense %>
+      <div class="text-sm p-2 border-b-2">
+        <span>With </span>
+        <strong>you</strong>
+        <span> and:</span>
 
-<br>
+        <%= form_with url: search_user_path, method: :post, data: { controller: 'debounce', debounce_target: 'form' }, class: 'inline-block' do |form| %>
+          <%= form.search_field :search, value: params[:search], data: { action: "input->debounce#search" }, class: "outline-none" %>
+        <% end %>
 
-<div>
-  <%= link_to "Back to expenses", expenses_path %>
-</div>
+        <div id="search_results"></div>
+      </div>
+
+      <div class="w-72 h-24 mx-auto my-2 flex gap-1">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 22" stroke-width="1.0" stroke="currentColor" class="w-20 h-24 float-left inline-block mt-1 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z" />
+          </svg>
+        </div>
+
+        <div>
+          <input type="text" placeholder="Enter a description" class="outline-none border-b-2 border-dashed mt-4">
+          <input type="text" placeholder="0.00" class="outline-none border-b-2 border-dashed text-3xl mt-2 w-24">
+        </div>
+      </div>
+
+      <div class="my-2 min-w-72 mx-auto text-center text-sm">
+        <span>Paid by </span>
+
+        <div data-controller="paid-by-dropdown" class="relative inline-block text-left">
+          <div class="bg-gray-300 hover:bg-gray-400 focus:ring-gray-600 font-medium rounded-lg text-sm px-1 text-center inline-flex items-center"
+              data-action="click->paid-by-dropdown#toggle click@window->paid-by-dropdown#hide"
+              data-paid-by-dropdown-target="paidByUser" >
+            you
+          </div>
+
+          <div data-paid-by-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-40 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+            <div class="py-1">
+              <a href="#" class="bg-gray-100 text-gray-900 block px-4 py-2 text-sm"
+                          data-action="paid-by-dropdown#toggle paid-by-dropdown#setUser"
+                          data-paid-by-dropdown-name-param="John Smith" >
+                John Smith
+              </a>
+              <a href="#" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm"
+                          data-action="paid-by-dropdown#toggle paid-by-dropdown#setUser"
+                          data-paid-by-dropdown-name-param="Samuel Corby" >
+                Samuel Corby
+              </a>
+              <a href="#" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm"
+                          data-action="paid-by-dropdown#toggle paid-by-dropdown#setUser"
+                          data-paid-by-dropdown-name-param="Jayden Cooper" >
+                Jayden Cooper
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <span> and split </span>
+
+        <div data-controller="split-by-dropdown" class="relative inline-block text-left">
+          <div class="bg-gray-300 hover:bg-gray-400 focus:ring-gray-600 font-medium rounded-lg text-sm px-1 text-center inline-flex items-center"
+              data-action="click->split-by-dropdown#toggle click@window->split-by-dropdown#hide"
+              data-split-by-dropdown-target="splitByMethod" >
+            equally
+          </div>
+
+          <div data-split-by-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-40 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+            <div class="py-1">
+              <a href="#" class="bg-gray-100 text-gray-900 block px-4 py-2 text-sm"
+                          data-action="split-by-dropdown#toggle split-by-dropdown#setUser"
+                          data-split-by-dropdown-name-param="equally" >
+                equally
+              </a>
+              <a href="#" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm"
+                          data-action="split-by-dropdown#toggle split-by-dropdown#setUser"
+                          data-split-by-dropdown-name-param="by shares" >
+                by shares
+              </a>
+              <a href="#" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm"
+                          data-action="split-by-dropdown#toggle split-by-dropdown#setUser"
+                          data-split-by-dropdown-name-param="by percentage" >
+                by percentage
+              </a>
+              <a href="#" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm"
+                          data-action="split-by-dropdown#toggle split-by-dropdown#setUser"
+                          data-split-by-dropdown-name-param="with multiple items" >
+                with multiple items
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="min-w-72 min-h-72 m-12">
+        <h1>
+          <button type="button" class="flex items-center justify-between w-full py-3 px-4 font-medium rtl:text-right text-gray-500 border border-gray-200 rounded-t-xl hover:bg-gray-100 gap-3">
+            <span>Equally</span>
+            <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+            </svg>
+          </button>
+        </h1>
+
+        <div class="">
+          <div class="p-5 border border-t-0 border-gray-200">
+            <p class="mb-2 text-gray-500 ">Flowbite is an open-source library of interactive components built on top of Tailwind CSS including buttons, dropdowns, modals, navbars, and more.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+<% end %>

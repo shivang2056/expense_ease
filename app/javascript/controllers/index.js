@@ -4,5 +4,17 @@
 
 import { application } from "./application"
 
+import DebounceController from "./debounce_controller"
+application.register("debounce", DebounceController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import PaidByDropdownController from "./paid_by_dropdown_controller"
+application.register("paid-by-dropdown", PaidByDropdownController)
+
+import RemoteModalController from "./remote_modal_controller"
+application.register("remote-modal", RemoteModalController)
+
+import SplitByDropdownController from "./split_by_dropdown_controller"
+application.register("split-by-dropdown", SplitByDropdownController)
