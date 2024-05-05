@@ -1,5 +1,4 @@
 class DashboardController < ApplicationController
-  # before_action :authenticate_user!
 
   def index
   end
@@ -42,6 +41,9 @@ class DashboardController < ApplicationController
   end
 
   def reload_split_by_accordion
-
+    @users = User.find(params[:participant_ids].split(","))
+    @cost = params[:cost].to_f
+    @per_head_cost = @cost / @users.size
+    @split_by = params[:split_by]
   end
 end

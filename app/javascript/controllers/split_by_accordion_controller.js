@@ -22,7 +22,7 @@ export default class extends Controller {
     let splitByMethod = this.splitByMethodTarget.value;
 
     if (cost == '999') {
-      frame.src = `/reload_split_by_accordion?cost=${cost}&participant_ids=${participantIds}&split_by=${splitByMethod}`
+      frame.src = `/expenses/new?cost=${cost}&participant_ids=${participantIds}&split_by=${splitByMethod}`
     }
   }
 }

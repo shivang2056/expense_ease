@@ -1,27 +1,111 @@
-<%= form_with(model: expense) do |form| %>
-  <% if expense.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(expense.errors.count, "error") %> prohibited this expense from being saved:</h2>
-
-      <ul>
-        <% expense.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+<%= form_with model: expense do |expense_form| %>
+  <div class="w-72 h-24 mx-auto my-2 flex gap-1">
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 22" stroke-width="1.0" stroke="currentColor" class="w-20 h-24 float-left inline-block mt-1 mr-2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z" />
+      </svg>
     </div>
-  <% end %>
 
-  <div>
-    <%= form.label :user_id, style: "display: block" %>
-    <%= form.text_field :user_id %>
+    <div>
+      <%= expense_form.text_field :description, placeholder: "Enter a description", class: "outline-none border-b-2 border-dashed mt-4" %>
+      <%= expense_form.number_field :amount, step: :any, placeholder: "0.00", class: "outline-none border-b-2 border-dashed text-3xl mt-2 w-24", data: { split_by_accordion_target: "cost", action: "input->split-by-accordion#reload" } %>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :amount, style: "display: block" %>
-    <%= form.text_field :amount %>
+  <div class="my-2 min-w-72 mx-auto text-center text-sm">
+    <span>Paid by </span>
+
+    <div data-controller="paid-by-dropdown" class="relative inline-block text-left">
+      <button class="bg-gray-300 hover:bg-gray-400 focus:ring-gray-600 font-medium rounded-lg text-sm px-1 text-center inline-flex items-center"
+          data-action="click->paid-by-dropdown#toggle click@window->paid-by-dropdown#hide"
+          data-paid-by-dropdown-target="paidByUserLabel"  >
+        you
+      </button>
+      <%= expense_form.hidden_field :user_id, value: current_user.id, data: { paid_by_dropdown_target: "paidByUser" } %>
+
+      <div data-paid-by-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-40 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+        <div id="paid_by_dropdown" class="py-1">
+          <a href="#" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm"
+                      data-action="paid-by-dropdown#toggle paid-by-dropdown#setUser"
+                      data-paid-by-dropdown-name-param="you" data-paid-by-dropdown-id-param="<%= current_user.id %>" >
+            you
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <span> and split </span>
+
+    <div data-controller="split-by-dropdown" class="relative inline-block text-left">
+      <button value="equally" class="bg-gray-300 hover:bg-gray-400 focus:ring-gray-600 font-medium rounded-lg text-sm px-1 text-center inline-flex items-center"
+          data-action="click->split-by-dropdown#toggle click@window->split-by-dropdown#hide change->split-by-accordion#setTitle change->split-by-accordion#reload"
+          data-split-by-dropdown-target="splitByMethod" data-split-by-accordion-target="splitByMethod" >
+        equally
+      </button>
+
+      <div data-split-by-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-40 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+        <div class="py-1">
+          <a href="#" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm"
+                      data-action="split-by-dropdown#toggle split-by-dropdown#setSplitMethod"
+                      data-split-by-dropdown-name-param="equally" >
+            equally
+          </a>
+          <a href="#" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm"
+                      data-action="split-by-dropdown#toggle split-by-dropdown#setSplitMethod"
+                      data-split-by-dropdown-name-param="by shares" >
+            by shares
+          </a>
+          <a href="#" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm"
+                      data-action="split-by-dropdown#toggle split-by-dropdown#setSplitMethod"
+                      data-split-by-dropdown-name-param="by percentage" >
+            by percentage
+          </a>
+          <a href="#" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm"
+                      data-action="split-by-dropdown#toggle split-by-dropdown#setSplitMethod"
+                      data-split-by-dropdown-name-param="with multiple items" >
+            with multiple items
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="min-w-72 min-h-72 m-12 text-gray-500" data-split-by-accordion-target="accordionElement">
+    <h1>
+      <button type="button" class="flex items-center justify-between w-full py-3 px-4 font-medium rtl:text-right border border-gray-200 rounded-t-xl hover:bg-gray-100 gap-3"
+              data-action="click->split-by-accordion#toggle">
+        <span class="capitalize" data-split-by-accordion-target="title">equally</span>
+        <svg data-accordion-icon data-split-by-accordion-target="svgIndicator" class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+        </svg>
+      </button>
+    </h1>
+
+    <div class="hidden" data-split-by-accordion-target="body">
+      <div class="p-5 border border-t-0 border-gray-200">
+        <%= turbo_frame_tag :split_by_accordion_body do %>
+          <% if @users.present? %>
+            <%= expense_form.fields_for :items do |item_form| %>
+              <% @users.each do |user| %>
+                <%= item_form.fields_for :splits do |split_form| %>
+                  <div class="w-1/2 mx-auto mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 inline-block">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                    <span class=""><%= user.name %></span>
+                    <%= split_form.hidden_field :user_id, value: user.id %>
+                    <span class="mx-2 float-right"><%= @per_head_cost %></span>
+                  </div>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="m-6">
+    <%= expense_form.submit "Save", class: "bg-gray-500 text-gray-100 hover:bg-gray-600 hover:text-gray-200 rounded-full p-3"%>
   </div>
 <% end %>

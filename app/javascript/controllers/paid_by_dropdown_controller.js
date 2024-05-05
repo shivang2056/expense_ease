@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="paid-by-dropdown"
 export default class extends Controller {
-  static targets = ["menu", "paidByUser"]
+  static targets = ["menu", "paidByUser", "paidByUserLabel"]
 
   connect() {
   }
@@ -15,8 +15,8 @@ export default class extends Controller {
   setUser(e) {
     e.preventDefault();
 
-    this.paidByUserTarget.value = e.params.name.split(' ').join('_');
-    this.paidByUserTarget.innerHTML = e.params.name;
+    this.paidByUserTarget.value = e.params.id;
+    this.paidByUserLabelTarget.innerHTML = e.params.name;
   }
 
   hide(event) {

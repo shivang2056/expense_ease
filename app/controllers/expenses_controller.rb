@@ -13,6 +13,17 @@ class ExpensesController < ApplicationController
   # GET /expenses/new
   def new
     @expense = Expense.new
+
+    if params[:participant_ids]
+      @users = User.find(params[:participant_ids].split(","))
+      @cost = params[:cost].to_f
+      @per_head_cost = @cost / @users.size
+      @split_by = params[:split_by]
+
+      item = @expense.items.build
+
+      item.splits.build
+    end
   end
 
   # GET /expenses/1/edit
@@ -65,6 +76,7 @@ class ExpensesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def expense_params
-      params.require(:expense).permit(:user_id, :amount)
+      params.require(:expense).permit(:user_id, :amount, :description,
+        items_attributes: [ splits_attributes: [:user_id, :amount] ])
     end
 end
