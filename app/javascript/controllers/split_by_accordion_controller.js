@@ -1,0 +1,28 @@
+import { Controller } from "@hotwired/stimulus"
+
+// Connects to data-controller="split-by-accordion"
+export default class extends Controller {
+  static targets = ['splitByMethod', 'cost', 'participantsIds', 'accordionElement', 'title', 'body', 'svgIndicator'];
+  connect() {
+  }
+
+  setTitle() {
+    this.titleTarget.innerHTML = this.splitByMethodTarget.innerHTML;
+  }
+
+  toggle() {
+    this.bodyTarget.classList.toggle('hidden');
+    this.accordionElementTarget.classList.toggle('text-gray-900');
+    this.svgIndicatorTarget.classList.toggle('rotate-180');
+  }
+  reload() {
+    let frame = this.bodyTarget.querySelector('turbo-frame#split_by_accordion_body');
+    let participantIds = this.participantsIdsTarget.value;
+    let cost = this.costTarget.value;
+    let splitByMethod = this.splitByMethodTarget.value;
+
+    if (cost == '999') {
+      frame.src = `/reload_split_by_accordion?cost=${cost}&participant_ids=${participantIds}&split_by=${splitByMethod}`
+    }
+  }
+}

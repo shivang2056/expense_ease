@@ -14,6 +14,8 @@ export default class extends Controller {
 
   setUser(e) {
     e.preventDefault();
+
+    this.paidByUserTarget.value = e.params.name.split(' ').join('_');
     this.paidByUserTarget.innerHTML = e.params.name;
   }
 

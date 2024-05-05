@@ -12,9 +12,13 @@ export default class extends Controller {
     this.menuTarget.classList.toggle('hidden');
   }
 
-  setUser(e) {
+  setSplitMethod(e) {
     e.preventDefault();
+
+    this.splitByMethodTarget.value = e.params.name.split(' ').join('_');
     this.splitByMethodTarget.innerHTML = e.params.name;
+
+    this.splitByMethodTarget.dispatchEvent(new Event('change'));
   }
 
   hide(event) {
