@@ -6,6 +6,8 @@ class User < ApplicationRecord
 
   has_many :expenses
   has_many :splits
+  has_many :friendships
+  has_many :friends, through: :friendships
 
   scope :by_name, -> (name) { where('name ILIKE ?', "%#{name}%") }
 
