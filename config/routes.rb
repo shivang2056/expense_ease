@@ -13,10 +13,8 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   get "/all_expenses", to: "dashboard#all_expenses"
-  get "/test", to: "dashboard#test"
   post :search_user, to: "dashboard#search_user", as: :search_user
   get '/append_user/:id', to: 'dashboard#append', as: :append_user
-  get "/reload_split_by_accordion", to: "dashboard#reload_split_by_accordion", as: :reload_split_by_accordion
 
   # Defines the root path route ("/")
   root "dashboard#index"

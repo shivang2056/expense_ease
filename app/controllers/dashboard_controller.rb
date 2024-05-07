@@ -7,9 +7,6 @@ class DashboardController < ApplicationController
   def all_expenses
   end
 
-  def test
-  end
-
   def append
     @user = User.find(params[:id])
 
@@ -39,12 +36,5 @@ class DashboardController < ApplicationController
         ]
       end
     end
-  end
-
-  def reload_split_by_accordion
-    @users = User.find(params[:participant_ids].split(","))
-    @cost = params[:cost].to_f
-    @per_head_cost = @cost / @users.size
-    @split_by = params[:split_by]
   end
 end
