@@ -4,9 +4,6 @@ class DashboardController < ApplicationController
     @decorator = DashboardDecorator.decorate(current_user)
   end
 
-  def all_expenses
-  end
-
   def append
     @user = User.find(params[:id])
 

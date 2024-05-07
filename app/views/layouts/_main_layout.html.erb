@@ -1,0 +1,26 @@
+<div class="container w-7/12 mx-auto mt-10 border h-screen flex">
+  <%= render "shared/sidebar_left" %>
+
+  <div class="w-4/6 w- border flex flex-col">
+    <div class="basis-24 border flex justify-between">
+      <div class="mx-4 my-6 text-2xl font-semibold">
+        <%= yield :heading %>
+      </div>
+
+      <div class="flex mx-4 my-6">
+        <div class="mx-4">
+          <%= link_to "Add an Expense", new_expense_path, data: { turbo_frame: :remote_modal }, class: "bg-gray-500 text-gray-100 hover:bg-gray-600 hover:text-gray-200 rounded-full p-3" %>
+        </div>
+
+        <div class="mx-4">
+          <a href="#" class="bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-600 rounded-full p-3">Settle Up</a>
+        </div>
+      </div>
+    </div>
+
+    <%= yield %>
+  </div>
+
+  <div class="w-1/6 border">
+  </div>
+</div>

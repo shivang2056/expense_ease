@@ -8,4 +8,14 @@ class User < ApplicationRecord
   has_many :splits
 
   scope :by_name, -> (name) { where('name ILIKE ?', "%#{name}%") }
+
+  def shortened_name
+    parts = name.split(' ')
+
+    if parts.length > 1
+      "#{parts[0]} #{parts[1][0]}."
+    else
+      parts[0]
+    end
+  end
 end
