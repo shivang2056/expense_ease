@@ -10,36 +10,36 @@ user1:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'Qwerty123') %>
 
 user2:
-  name: User2
+  name: <%= Faker::Name.name %>
   email: email2@example.com
   encrypted_password: <%= Devise::Encryptor.digest(User, 'Qwerty123') %>
 
 user3:
-  name: User3
+  name: <%= Faker::Name.name %>
   email: email3@example.com
   encrypted_password: <%= Devise::Encryptor.digest(User, 'Qwerty123') %>
 
 user4:
-  name: User4
+  name: <%= Faker::Name.name %>
   email: email4@example.com
   encrypted_password: <%= Devise::Encryptor.digest(User, 'Qwerty123') %>
 
 user5:
-  name: User5
+  name: <%= Faker::Name.name %>
   email: email5@example.com
   encrypted_password: <%= Devise::Encryptor.digest(User, 'Qwerty123') %>
 
 user6:
-  name: User6
+  name: <%= Faker::Name.name %>
   email: email6@example.com
   encrypted_password: <%= Devise::Encryptor.digest(User, 'Qwerty123') %>
 
 user7:
-  name: User7
+  name: <%= Faker::Name.name %>
   email: email7@example.com
   encrypted_password: <%= Devise::Encryptor.digest(User, 'Qwerty123') %>
 
 user8:
-  name: User8
+  name: <%= Faker::Name.name %>
   email: email8@example.com
   encrypted_password: <%= Devise::Encryptor.digest(User, 'Qwerty123') %>

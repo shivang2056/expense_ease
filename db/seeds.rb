@@ -10,3 +10,18 @@
 
 puts "\n== Seeding the database with fixtures =="
 system("bin/rails db:fixtures:load")
+
+User.all.each do |user|
+  20.times do |i|
+    expense = Expense.create!(description: "expense for something #{rand(100..10000)}", user: user, amount: rand(100..500))
+
+    item = Item.create!(expense: expense, name: "Item for #{expense.description}", cost: expense.amount)
+
+    Split.create!(user: user, item: item, amount: item.cost / 5)
+
+    User.where.not(id: user.id).sample(4).each do |split_user|
+      Split.create!(user: split_user, item: item, amount: item.cost / 5)
+    end
+  end
+end
+

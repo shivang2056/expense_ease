@@ -13,7 +13,7 @@
       </div>
       <div class="inline-block">
         <a href="#" class="px-4 py-2 hover:text-gray-900 rounded">My Account</a>
-        <a href="#" class="px-4 py-2 hover:text-gray-900 rounded">Sign Out</a>
+        <%= link_to "Sign Out", destroy_user_session_path, class: "px-4 py-2 hover:text-gray-900 rounded", data: { turbo_method: :delete } %>
       </div>
     </div>
   </div>
