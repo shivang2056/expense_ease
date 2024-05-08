@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :friendships
   has_many :friends, through: :friendships
 
+  scope :non_friends_for, -> (user) { where.not(id: user.friends.pluck(:id) + [user.id]) }
   scope :by_name, -> (name) { where('name ILIKE ?', "%#{name}%") }
 
   def shortened_name

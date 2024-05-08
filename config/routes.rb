@@ -7,7 +7,9 @@ Rails.application.routes.draw do
     end
   end
 
-  scope '/users/:user_id' do
+  resources :users, only: [:search] do
+    post :search, on: :collection
+
     resources :friendships, only: [:new, :create]
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

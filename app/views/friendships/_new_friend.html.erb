@@ -1,0 +1,5 @@
+<div class="my-3 border rounded">
+  <%= form_with url: search_users_path, data: { controller: 'debounce', debounce_target: 'form' } do |form| %>
+    <%= form.search_field :search, value: params[:search], data: { action: "input->debounce#search" }, class: "max-w-40 outline-none pl-1" %>
+  <% end %>
+</div>
