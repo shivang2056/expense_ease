@@ -13,7 +13,7 @@
         <strong>you</strong>
         <span> and:</span>
 
-        <%= form_with url: search_user_path, method: :post, data: { controller: 'debounce', debounce_target: 'form' }, class: 'inline-block' do |form| %>
+        <%= form_with url: search_user_friendships_path(current_user), data: { controller: 'debounce', debounce_target: 'form' }, class: 'inline-block' do |form| %>
           <%= form.search_field :search, value: params[:search], data: { action: "input->debounce#search" }, class: "outline-none" %>
         <% end %>
 

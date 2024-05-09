@@ -10,7 +10,11 @@ Rails.application.routes.draw do
   resources :users, only: [:search] do
     post :search, on: :collection
 
-    resources :friendships, only: [:new, :create]
+    resources :friendships, only: [:new, :create] do
+      get :expenses, on: :member
+
+      post :search, on: :collection
+    end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

@@ -13,19 +13,47 @@ class FriendshipsController < ApplicationController
 
   def create
     friend = User.find(friend_create_params[:friend_id])
-    current_user.friendships.create!(friend: friend)
+    friendship = current_user.friendships.create!(friend: friend)
 
     respond_to do |format|
       format.turbo_stream do
           render turbo_stream: [
             turbo_stream.prepend("friends_list",
             partial: "friend",
-            locals: { name: friend.name }),
+            locals: { friendship: friendship }),
 
             turbo_stream.remove("user_search_results"),
 
             turbo_stream.remove("new_friend")
           ]
+      end
+    end
+  end
+
+  def expenses
+    @friend = Friendship.find(params[:id]).friend
+
+    decorator = ExpenseDecorator.decorate(current_user)
+    @grouped_expenses = decorator.involved_expenses_with(@friend)
+  end
+
+  def search
+    if params.dig(:search).present?
+      @users = current_user
+                  .friends
+                  .by_name(params[:search])
+                  .order(created_at: :desc)
+    else
+      @users = []
+    end
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.update("user_search_results",
+          partial: "users/search_results",
+          locals: { users: @users })
+        ]
       end
     end
   end

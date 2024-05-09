@@ -17,7 +17,7 @@
   <div class="mx-2 text-gray-400">
     <div class="flex justify-between border bg-gray-200 rounded py-1 px-1 my-4">
       <div>FRIENDS</div>
-      <%= link_to new_user_friendship_path(current_user), class: "", data: { turbo_stream: true } do %>
+      <%= link_to new_user_friendship_path(current_user), data: { turbo_stream: true } do %>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 hover:text-gray-800">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
         </svg>
@@ -28,8 +28,8 @@
     <div id="user_search_results"></div>
 
     <div id="friends_list">
-      <% current_user.friends.pluck(:name).each do |name| %>
-        <%= render "friendships/friend", name: name%>
+      <% current_user.friendships.includes(:friend).reorder(created_at: :desc).each do |friendship| %>
+        <%= render "friendships/friend", friendship: friendship %>
       <% end %>
     </div>
   </div>
