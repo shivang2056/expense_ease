@@ -20,10 +20,16 @@ class ExpensesController < ApplicationController
       @cost = params[:cost].to_f
       @per_head_cost = @cost / @users.size
       @split_by = params[:split_by]
-
       item = @expense.items.build
 
       item.splits.build
+
+
+      case @split_by
+      when 'equally'
+      when 'by_shares'
+      when 'with_multiple_items'
+      end
     end
   end
 

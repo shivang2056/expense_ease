@@ -10,6 +10,9 @@ application.register("debounce", DebounceController)
 import ExpenseParticipantsController from "./expense_participants_controller"
 application.register("expense-participants", ExpenseParticipantsController)
 
+import ExpenseSharesController from "./expense_shares_controller"
+application.register("expense-shares", ExpenseSharesController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
