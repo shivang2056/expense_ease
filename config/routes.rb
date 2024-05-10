@@ -5,6 +5,8 @@ Rails.application.routes.draw do
     resources :items do
       resources :splits
     end
+
+    get :add_participant, on: :collection
   end
 
   resources :users, only: [:search] do
@@ -23,7 +25,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   post :search_user, to: "dashboard#search_user", as: :search_user
-  get '/append_user/:id', to: 'dashboard#append', as: :append_user
+  # get '/append_user/:id', to: 'dashboard#append', as: :append_user
 
   # Defines the root path route ("/")
   root "dashboard#index"

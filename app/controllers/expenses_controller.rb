@@ -69,6 +69,23 @@ class ExpensesController < ApplicationController
     end
   end
 
+  def add_participant
+    participant = User.find(params[:friend_id])
+
+    respond_to do |format|
+      format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.append("participants",
+                                partial: "participant",
+                                locals: { user: participant }),
+            turbo_stream.append("paid_by_dropdown",
+                                partial: "dropdown_user",
+                                locals: { user: participant })
+          ]
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_expense

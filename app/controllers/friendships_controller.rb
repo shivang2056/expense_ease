@@ -19,11 +19,9 @@ class FriendshipsController < ApplicationController
       format.turbo_stream do
           render turbo_stream: [
             turbo_stream.prepend("friends_list",
-            partial: "friend",
-            locals: { friendship: friendship }),
-
+                                  partial: "friend",
+                                  locals: { friendship: friendship }),
             turbo_stream.remove("user_search_results"),
-
             turbo_stream.remove("new_friend")
           ]
       end
@@ -39,20 +37,20 @@ class FriendshipsController < ApplicationController
 
   def search
     if params.dig(:search).present?
-      @users = current_user
+      friends = current_user
                   .friends
                   .by_name(params[:search])
                   .order(created_at: :desc)
     else
-      @users = []
+      friends = []
     end
 
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
-          turbo_stream.update("user_search_results",
-          partial: "users/search_results",
-          locals: { users: @users })
+          turbo_stream.update("friend_search_results",
+          partial: "friendships/search_results",
+          locals: { friends: friends })
         ]
       end
     end

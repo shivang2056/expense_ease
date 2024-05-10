@@ -95,6 +95,7 @@
                     <span class=""><%= user.name %></span>
                     <%= split_form.hidden_field :user_id, value: user.id %>
                     <span class="mx-2 float-right"><%= @per_head_cost %></span>
+                    <%= split_form.hidden_field :amount, value: @per_head_cost %>
                   </div>
                 <% end %>
               <% end %>

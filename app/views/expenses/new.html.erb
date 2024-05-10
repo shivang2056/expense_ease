@@ -17,11 +17,11 @@
           <%= form.search_field :search, value: params[:search], data: { action: "input->debounce#search" }, class: "outline-none" %>
         <% end %>
 
+        <div id="friend_search_results"></div>
+
         <%= hidden_field_tag :participants_ids, current_user.id, data: { expense_participants_target: "participantsIds", split_by_accordion_target: "participantsIds", action: "change->split-by-accordion#reload" } %>
 
-        <div id="search_results"></div>
-
-        <div id="selected_users"></div>
+        <div id="participants"></div>
       </div>
 
       <%= render "form", expense: @expense %>
