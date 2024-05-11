@@ -7,6 +7,9 @@ import { application } from "./application"
 import DebounceController from "./debounce_controller"
 application.register("debounce", DebounceController)
 
+import ItemForm from "./item_form_controller"
+application.register("item-form", ItemForm)
+
 import ExpenseParticipantsController from "./expense_participants_controller"
 application.register("expense-participants", ExpenseParticipantsController)
 
