@@ -3,11 +3,11 @@
     <tr>
       <th class="px-1 text-left">
         Item
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline-block pb-0.5 cursor-pointer" data-action="click->item-form#addItem">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block pb-0.5 cursor-pointer" data-action="click->item-form#addItem">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
         </svg>
       </th>
-      <th class="text-center pr-3 pl-2.5 w-9">₹</th>
+      <th class="text-center pr-3 pl-2.5 w-9">$</th>
       <% @users.each do |user| %>
         <th class="text-center leading-4 cursor-pointer" title="<%= user.name %>"><%= user.name.split(" ").join(" </br> ").html_safe %></th>
       <% end %>
@@ -48,11 +48,9 @@
         </td>
         <% @users.each do |user| %>
           <%= tax_form.fields_for :splits do |split_form| %>
-            <td class="px-0.5 w-6 text-center">
-              <input type="text" name="tax_amount" class="w-7 p-0.5 h-4 mr-0.5 mb-0 ml-0 text-center border" value="0.00">
-              <%= split_form.hidden_field :user_id, value: user.id %>
-              <%= split_form.hidden_field :amount, value: 0 %>
-            </td>
+            <td class="px-0.5 w-6 text-center border border-gray-600 border-collapse border-spacing-0">0.00</td>
+            <%= split_form.hidden_field :user_id, value: user.id %>
+            <%= split_form.hidden_field :amount, value: 0 %>
           <% end %>
         <% end %>
       <% end %>
@@ -69,14 +67,16 @@
         </td>
         <% @users.each do |user| %>
           <%= tip_form.fields_for :splits do |split_form| %>
-            <td class="px-0.5 w-6 text-center">
-              <input type="text" name="tip_amount" class="w-7 p-0.5 h-4 mr-0.5 mb-0 ml-0 text-center border" value="0.00">
-              <%= split_form.hidden_field :user_id, value: user.id %>
-              <%= split_form.hidden_field :amount, value: 0 %>
-            </td>
+            <td class="px-0.5 w-6 text-center border border-gray-600 border-collapse border-spacing-0">0.00</td>
+            <%= split_form.hidden_field :user_id, value: user.id %>
+            <%= split_form.hidden_field :amount, value: 0 %>
           <% end %>
         <% end %>
       <% end %>
+    </tr>
+
+    <tr class="h-3">
+      <td></td>
     </tr>
 
     <tr class="border-t-2">
