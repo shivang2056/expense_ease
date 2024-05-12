@@ -4,7 +4,9 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = [
     'taxPercent', 'splitTax',
+    'taxCost', 'splitTaxAmount',
     'tipPercent', 'splitTip',
+    'tipCost', 'splitTipAmount',
     'grandTotal', 'splitGrandTotal',
     'splitSubtotal'
   ]
@@ -21,21 +23,35 @@ export default class extends Controller {
 
   calculateTax() {
     let taxPercent = Number(this.taxPercentTarget.value)
+    let sum = 0
 
     if (typeof taxPercent == 'number'){
       for (let i = 0; i < this.splitSubtotalTargets.length; i++) {
-        this.splitTaxTargets[i].innerHTML = ((taxPercent * Number(this.splitSubtotalTargets[i].innerHTML)) / 100).toFixed(2)
+        let splitTaxAmount = ((taxPercent * Number(this.splitSubtotalTargets[i].innerHTML)) / 100)
+
+        sum += splitTaxAmount
+        this.splitTaxTargets[i].innerHTML = splitTaxAmount.toFixed(2)
+        this.splitTaxAmountTargets[i].value = splitTaxAmount.toFixed(2)
       }
+
+      this.taxCostTarget.value = sum
     }
   }
 
   calculateTip() {
     let tipPercent = Number(this.tipPercentTarget.value)
+    let sum = 0
 
     if (typeof tipPercent == 'number'){
       for (let i = 0; i < this.splitSubtotalTargets.length; i++) {
-        this.splitTipTargets[i].innerHTML = ((tipPercent * Number(this.splitSubtotalTargets[i].innerHTML)) / 100).toFixed(2)
+        let splitTipAmount = ((tipPercent * Number(this.splitSubtotalTargets[i].innerHTML)) / 100)
+
+        sum += splitTipAmount
+        this.splitTipTargets[i].innerHTML = splitTipAmount.toFixed(2)
+        this.splitTipAmountTargets[i].value = splitTipAmount.toFixed(2)
       }
+
+      this.tipCostTarget.value = sum
     }
   }
 

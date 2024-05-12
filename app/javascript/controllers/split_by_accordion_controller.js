@@ -18,7 +18,7 @@ export default class extends Controller {
 
   setCost() {
     if (this.hasGrandTotalTarget) {
-      this.costTarget.value = Number(this.grandTotalTarget.innerHTML)
+      this.costTarget.value = Number(this.grandTotalTarget.innerHTML).toFixed(2)
     }
   }
 

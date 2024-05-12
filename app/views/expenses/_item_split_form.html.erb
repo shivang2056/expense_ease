@@ -8,7 +8,7 @@
   <% @users.each do |user| %>
     <%= item_form.fields_for :splits do |split_form| %>
       <%= split_form.hidden_field :user_id, value: user.id %>
-      <%= split_form.hidden_field :amount, value: 0 %>
+      <%= split_form.hidden_field :amount, value: 0, data: { itemized__item_target: "itemSplitAmount" } %>
       <td class="px-0.5 bg-gray-200 w-6 text-center border border-gray-600 border-collapse border-spacing-0" data-itemized--item-target="itemSplit" data-itemized--subtotal-target="itemSplit" data-action="click->itemized--item#toggle">0.00</td>
     <% end %>
   <% end %>

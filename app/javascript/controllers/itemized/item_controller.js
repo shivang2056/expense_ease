@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="itemized--item"
 export default class extends Controller {
-  static targets = ['itemCost', 'itemSplit']
+  static targets = ['itemCost', 'itemSplit', 'itemSplitAmount']
 
   disconnect(){
     this.fireSplitChangeEvent()
@@ -20,6 +20,7 @@ export default class extends Controller {
       selectedSplits[i].innerHTML = perSplitAmount
     }
 
+    this.fillHiddenItemAmountInput()
     this.fireSplitChangeEvent()
   }
 
@@ -38,6 +39,12 @@ export default class extends Controller {
 
   selectedSplits() {
     return this.itemSplitTargets.filter(target => (target.dataset.state != 'unselected'))
+  }
+
+  fillHiddenItemAmountInput() {
+    for (let i = 0; i < this.itemSplitTargets.length; i++) {
+      this.itemSplitAmountTargets[i].value = Number(this.itemSplitTargets[i].innerHTML)
+    }
   }
 
   fireSplitChangeEvent() {

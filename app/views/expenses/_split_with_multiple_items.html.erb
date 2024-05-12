@@ -38,7 +38,7 @@
     <tr>
       <%= expense_form.fields_for :items do |tax_form| %>
         <%= tax_form.hidden_field :name, value: 'tax' %>
-        <%= tax_form.hidden_field :cost %>
+        <%= tax_form.hidden_field :cost, data: { itemized__grand_total_target: "taxCost" }  %>
         <td>&nbsp;&nbsp;&nbsp;+ Tax</td>
         <td class="pb-1 pr-3 pl-2.5">
           <input type="text" name="tax" class="p-0.5 w-9 mr-0.5 mb-0 h-4 ml-0 border" placeholder="6.5%" value="" data-itemized--grand-total-target="taxPercent" data-action="itemized--grand-total#calculate">
@@ -47,7 +47,7 @@
           <%= tax_form.fields_for :splits do |split_form| %>
             <td class="px-0.5 w-6 text-center border border-gray-600 border-collapse border-spacing-0" data-itemized--grand-total-target="splitTax">0.00</td>
             <%= split_form.hidden_field :user_id, value: user.id %>
-            <%= split_form.hidden_field :amount, value: 0 %>
+            <%= split_form.hidden_field :amount, value: 0, data: { itemized__grand_total_target: "splitTaxAmount" } %>
           <% end %>
         <% end %>
       <% end %>
@@ -56,7 +56,7 @@
     <tr>
       <%= expense_form.fields_for :items do |tip_form| %>
         <%= tip_form.hidden_field :name, value: 'tip' %>
-        <%= tip_form.hidden_field :cost %>
+        <%= tip_form.hidden_field :cost, data: { itemized__grand_total_target: "tipCost" } %>
 
         <td class="small">&nbsp;&nbsp;&nbsp;+ Tip</td>
         <td class="pb-1 pr-3 pl-2.5">
@@ -66,7 +66,7 @@
           <%= tip_form.fields_for :splits do |split_form| %>
             <td class="px-0.5 w-6 text-center border border-gray-600 border-collapse border-spacing-0" data-itemized--grand-total-target="splitTip">0.00</td>
             <%= split_form.hidden_field :user_id, value: user.id %>
-            <%= split_form.hidden_field :amount, value: 0 %>
+            <%= split_form.hidden_field :amount, value: 0, data: { itemized__grand_total_target: "splitTipAmount" } %>
           <% end %>
         <% end %>
       <% end %>
