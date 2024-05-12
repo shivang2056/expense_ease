@@ -1,5 +1,5 @@
-<table class="text-xs" data-controller="item-form" data-item-form-form-selector-value=".item-form">
-  <tbody>
+<table class="text-xs" data-controller="itemized--subtotal" data-action="itemSplitChange@window->itemized--subtotal#calculate" data-itemized--subtotal-user-count-value="<%= @users.count %>">
+  <tbody data-controller="item-form" data-item-form-form-selector-value=".item-form">
     <tr>
       <th class="px-1 text-left">
         Item
@@ -12,9 +12,7 @@
         <th class="text-center leading-4 cursor-pointer" title="<%= user.name %>"><%= user.name.split(" ").join(" </br> ").html_safe %></th>
       <% end %>
     </tr>
-  </tbody>
 
-  <tbody>
     <template data-item-form-target="formTemplate">
       <%= expense_form.fields_for :items, child_index: 'NEW_RECORD' do |item_form| %>
         <%= render "item_split_form", item_form: item_form %>
@@ -28,15 +26,14 @@
     <tr type="hidden" data-item-form-target="newItemLocation"></tr>
   </tbody>
 
-  <tbody>
+  <tbody data-controller="itemized--grand-total" data-action="subTotalChange@window->itemized--grand-total#calculate">
     <tr>
       <td class="pt-2 pb-1 font-bold">Subtotal</td>
-      <td class="pt-2 pb-1 pr-3 pl-2.5 font-bold" style="font-size: 13px">0.00</td>
+      <td class="pt-2 pb-1 pr-3 pl-2.5 font-bold" data-itemized--subtotal-target="subTotal">0.00</td>
       <% @users.each do |user| %>
-        <td class="pt-2 pb-1 pr-3 pl-2.5 font-bold w-6">0.00</td>
+        <td class="pt-2 pb-1 pr-3 pl-2.5 font-bold w-6" data-itemized--subtotal-target="splitTotal" data-itemized--grand-total-target="splitSubtotal">0.00</td>
       <% end %>
     </tr>
-
 
     <tr>
       <%= expense_form.fields_for :items do |tax_form| %>
@@ -44,11 +41,11 @@
         <%= tax_form.hidden_field :cost %>
         <td>&nbsp;&nbsp;&nbsp;+ Tax</td>
         <td class="pb-1 pr-3 pl-2.5">
-          <input type="text" name="tax" class="p-0.5 w-9 mr-0.5 mb-0 h-4 ml-0 border" placeholder="6.5%" value="">
+          <input type="text" name="tax" class="p-0.5 w-9 mr-0.5 mb-0 h-4 ml-0 border" placeholder="6.5%" value="" data-itemized--grand-total-target="taxPercent" data-action="itemized--grand-total#calculate">
         </td>
         <% @users.each do |user| %>
           <%= tax_form.fields_for :splits do |split_form| %>
-            <td class="px-0.5 w-6 text-center border border-gray-600 border-collapse border-spacing-0">0.00</td>
+            <td class="px-0.5 w-6 text-center border border-gray-600 border-collapse border-spacing-0" data-itemized--grand-total-target="splitTax">0.00</td>
             <%= split_form.hidden_field :user_id, value: user.id %>
             <%= split_form.hidden_field :amount, value: 0 %>
           <% end %>
@@ -63,11 +60,11 @@
 
         <td class="small">&nbsp;&nbsp;&nbsp;+ Tip</td>
         <td class="pb-1 pr-3 pl-2.5">
-          <input type="text" name="tip" class="p-0.5 w-9 mr-0.5 mb-0 h-4 ml-0 border" placeholder="18%" value="">
+          <input type="text" name="tip" class="p-0.5 w-9 mr-0.5 mb-0 h-4 ml-0 border" placeholder="18%" value="" data-itemized--grand-total-target="tipPercent" data-action="itemized--grand-total#calculate">
         </td>
         <% @users.each do |user| %>
           <%= tip_form.fields_for :splits do |split_form| %>
-            <td class="px-0.5 w-6 text-center border border-gray-600 border-collapse border-spacing-0">0.00</td>
+            <td class="px-0.5 w-6 text-center border border-gray-600 border-collapse border-spacing-0" data-itemized--grand-total-target="splitTip">0.00</td>
             <%= split_form.hidden_field :user_id, value: user.id %>
             <%= split_form.hidden_field :amount, value: 0 %>
           <% end %>
@@ -81,9 +78,9 @@
 
     <tr class="border-t-2">
       <td class="font-bold pt-1.5">Grand total</td>
-      <td class="font-bold pt-1.5 pr-3 pl-2.5">0.00</td>
+      <td class="font-bold pt-1.5 pr-3 pl-2.5" data-itemized--grand-total-target="grandTotal">0.00</td>
       <% @users.each do |user| %>
-        <td class="font-bold pt-1.5 px-0.5 text-center">0.00</td>
+        <td class="font-bold pt-1.5 px-0.5 text-center" data-itemized--grand-total-target="splitGrandTotal">0.00</td>
       <% end %>
     </tr>
   </tbody>

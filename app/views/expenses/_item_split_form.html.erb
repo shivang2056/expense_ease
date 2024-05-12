@@ -1,15 +1,15 @@
-<tr class="item-form">
+<tr class="item-form" data-controller="itemized--item">
   <td>
     <%= item_form.text_field :name, placeholder: "Description", class: "mb-0 w-52 p-1 border" %>
   </td>
   <td class="pr-3 pl-2.5">
-    <%= item_form.number_field :cost, class: "w-9 mb-0 ml-0 p-1 border" %>
+    <%= item_form.text_field :cost, class: "w-9 mb-0 ml-0 p-1 border", data: { itemized__item_target: "itemCost", action: "itemized--item#calculateSplits" } %>
   </td>
   <% @users.each do |user| %>
     <%= item_form.fields_for :splits do |split_form| %>
       <%= split_form.hidden_field :user_id, value: user.id %>
       <%= split_form.hidden_field :amount, value: 0 %>
-      <td class="px-0.5 bg-gray-200 w-6 text-center border border-gray-600 border-collapse border-spacing-0">0.00</td>
+      <td class="px-0.5 bg-gray-200 w-6 text-center border border-gray-600 border-collapse border-spacing-0" data-itemized--item-target="itemSplit" data-itemized--subtotal-target="itemSplit" data-action="click->itemized--item#toggle">0.00</td>
     <% end %>
   <% end %>
   <td class="pl-2.5 pr-4">

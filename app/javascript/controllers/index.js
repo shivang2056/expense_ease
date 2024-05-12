@@ -7,9 +7,6 @@ import { application } from "./application"
 import DebounceController from "./debounce_controller"
 application.register("debounce", DebounceController)
 
-import ItemForm from "./item_form_controller"
-application.register("item-form", ItemForm)
-
 import ExpenseParticipantsController from "./expense_participants_controller"
 application.register("expense-participants", ExpenseParticipantsController)
 
@@ -18,6 +15,18 @@ application.register("expense-shares", ExpenseSharesController)
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import ItemFormController from "./item_form_controller"
+application.register("item-form", ItemFormController)
+
+import Itemized__GrandTotalController from "./itemized/grand_total_controller"
+application.register("itemized--grand-total", Itemized__GrandTotalController)
+
+import Itemized__ItemController from "./itemized/item_controller"
+application.register("itemized--item", Itemized__ItemController)
+
+import Itemized__SubtotalController from "./itemized/subtotal_controller"
+application.register("itemized--subtotal", Itemized__SubtotalController)
 
 import PaidByDropdownController from "./paid_by_dropdown_controller"
 application.register("paid-by-dropdown", PaidByDropdownController)
