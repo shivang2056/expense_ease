@@ -2,12 +2,24 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="split-by-accordion"
 export default class extends Controller {
-  static targets = ['splitByMethod', 'cost', 'participantsIds', 'accordionElement', 'title', 'body', 'svgIndicator'];
+  static targets = [
+    'splitByMethod', 'cost',
+    'participantsIds', 'accordionElement',
+    'title', 'body','svgIndicator',
+    'grandTotal'
+  ];
+
   connect() {
   }
 
   setTitle() {
     this.titleTarget.innerHTML = this.splitByMethodTarget.innerHTML;
+  }
+
+  setCost() {
+    if (this.hasGrandTotalTarget) {
+      this.costTarget.value = Number(this.grandTotalTarget.innerHTML)
+    }
   }
 
   toggle() {

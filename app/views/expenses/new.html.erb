@@ -1,6 +1,6 @@
 <%= turbo_frame_tag :remote_modal do %>
   <dialog id="new_expense_modal" aria-labelledby="modal_title" data-controller="remote-modal" class="min-h-[700px] min-w-[600px] border border-gray-700 rounded shadow-md">
-    <div class="flex flex-col" data-controller="split-by-accordion">
+    <div class="flex flex-col" data-controller="split-by-accordion" data-action="grandTotalChange@window->split-by-accordion#setCost">
       <div class="bg-gray-200 text-gray-800 p-2 w-full">
         <h2 id="modal_title" class="inline-block">Add an Expense</h2>
         <form method="dialog" class="inline-block float-right">

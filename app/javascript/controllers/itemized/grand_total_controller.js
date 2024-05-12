@@ -16,6 +16,7 @@ export default class extends Controller {
     this.calculateTax()
     this.calculateTip()
     this.calculateGrandTotal()
+    this.fireGrandTotalChangeEvent()
   }
 
   calculateTax() {
@@ -50,6 +51,11 @@ export default class extends Controller {
     }
 
     this.grandTotalTarget.innerHTML = grandTotal.toFixed(2)
+  }
+
+  fireGrandTotalChangeEvent() {
+    const event = new CustomEvent("grandTotalChange")
+    window.dispatchEvent(event);
   }
 
 }
