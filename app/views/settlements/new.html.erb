@@ -1,0 +1,49 @@
+<%= turbo_frame_tag :remote_modal do %>
+  <dialog id="new_settlement_modal" aria-labelledby="modal_title" data-controller="remote-modal" class="min-h-[350px] min-w-[350px] border border-gray-700 rounded shadow-md">
+    <div class="flex flex-col">
+      <div class="bg-gray-200 text-gray-800 p-2 w-full">
+        <h2 id="modal_title" class="inline-block">Settle Up</h2>
+        <form method="dialog" class="inline-block float-right">
+          <button aria-label="close">X</button>
+        </form>
+      </div>
+
+      <div class="mx-auto my-2 flex">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-20 h-20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+        </svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-20 h-20 mx-1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+        </svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-20 h-20">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+        </svg>
+      </div>
+
+      <%= form_with model: @expense, url: user_settlements_path(current_user), class: "text-lg" do |settlement_form| %>
+        <div class="min-w-52 mx-auto my-2 flex justify-center">
+          <%= render "shared/dropdown", form: settlement_form, dropdown: @decorator.paid_by_dropdown %>
+
+          <span> paid </span>
+
+          <%= settlement_form.fields_for :items do |item_form| %>
+            <%= item_form.fields_for :splits do |split_form| %>
+              <%= render "shared/dropdown", form: split_form, dropdown: @decorator.paid_to_dropdown %>
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="w-36 block mx-auto mb-14 outline-none border-b-2 border-dashed flex">
+          <span class="pt-6 pr-1.5">$</span>
+          <%= settlement_form.number_field :amount, value: @decorator.total_owed_amount, class: "text-5xl w-full" %>
+        </div>
+
+        <div class="border-t-2">
+          <%= settlement_form.submit "Save", class: "bg-gray-500 text-gray-100 hover:bg-gray-600 hover:text-gray-200 rounded p-1 float-right m-2"%>
+        </div>
+      <% end %>
+    </div>
+  </dialog>
+<% end %>

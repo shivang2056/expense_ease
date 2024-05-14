@@ -1,0 +1,21 @@
+<div data-controller="dropdown" class="relative inline-block text-left px-2">
+  <button class="bg-gray-300 hover:bg-gray-400 focus:ring-gray-600 font-medium rounded-lg  px-1 text-center inline-flex items-center"
+      data-action="click->dropdown#toggle click@window->dropdown#hide"
+      data-dropdown-target="button"  >
+    <%= dropdown[:default][:name] %>
+  </button>
+
+  <div data-dropdown-target="options" class="hidden absolute right-0 mt-2 min-w-36 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 text-base bg-white">
+    <div class="py-1">
+      <% dropdown[:options].each do |option| %>
+        <a href="#" class="text-gray-700 hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 "
+              data-action="dropdown#toggle dropdown#setOption"
+              data-dropdown-option-param="<%= option[:name] %>" data-dropdown-option-value-param="<%= option[:value] %>" >
+          <%= option[:name] %>
+        </a>
+      <% end %>
+    </div>
+  </div>
+
+  <%= form.hidden_field dropdown[:input_field_name], value: dropdown[:default][:value], data: { dropdown_target: "formInput" } %>
+</div>

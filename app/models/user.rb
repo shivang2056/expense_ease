@@ -12,6 +12,8 @@ class User < ApplicationRecord
   scope :non_friends_for, -> (user) { where.not(id: user.friends.pluck(:id) + [user.id]) }
   scope :by_name, -> (name) { where('name ILIKE ?', "%#{name}%") }
 
+  attr_accessor :current_user
+
   def shortened_name
     parts = name.split(' ')
 
@@ -20,5 +22,11 @@ class User < ApplicationRecord
     else
       parts[0]
     end
+  end
+
+  def as_dropdown_option
+    name = current_user ? 'you' : self.shortened_name
+
+    { name: name, value: self.id }
   end
 end
