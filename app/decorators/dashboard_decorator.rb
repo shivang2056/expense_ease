@@ -9,42 +9,54 @@ class DashboardDecorator
     self.new(user)
   end
 
-  def amount_owed_by
-    @_amount_owed_by ||= @splits_for_owed_by.sum(:amount)
+  def total_amount_owed_by
+    @_amount_owed_by ||= users_i_owe(decorated: false).values.sum
   end
 
-  def amount_owed_to
-    @_amount_owed_to ||= @splits_for_owed_to.sum(:amount)
+  def total_amount_owed_to
+    @_amount_owed_to ||= users_who_owe_me(decorated: false).values.sum
   end
 
   def balance
-    amount_owed_to - amount_owed_by
+    total_amount_owed_to - total_amount_owed_by
   end
 
-  def users_owed_by
-    owed_amounts = @splits_for_owed_by.group('expenses.user_id').sum(:amount)
+  def users_i_owe(decorated: true)
+    @_users_i_owe ||= calculate_net_owed(@amount_owed_to_users, @amount_owed_by_users)
 
-    decorated_list(owed_amounts)
+    decorated ? decorated_list(@_users_i_owe) : @_users_i_owe
   end
 
-  def users_owed_to
-    owed_amounts = @splits_for_owed_to.group('splits.user_id').sum(:amount)
+  def users_who_owe_me(decorated: true)
+    @_users_who_owe_me ||= calculate_net_owed(@amount_owed_by_users, @amount_owed_to_users)
 
-    decorated_list(owed_amounts)
+    decorated ? decorated_list(@_users_who_owe_me) : @_users_who_owe_me
   end
 
   private
 
   def process_user_splits
-    user_expenses = Expense.where(user: @user)
+    user_as_participant_splits = Split.joins(item: :expense)
+                                       .where(user: @user)
+                                       .where.not(items: { expenses: { user: @user } })
 
-    @splits_for_owed_to = Split.joins(:item)
-                               .where(items: { expense: user_expenses })
-                               .where.not(user: @user)
+    @amount_owed_to_users = user_as_participant_splits.group('expenses.user_id').sum(:amount)
 
-    @splits_for_owed_by = Split.joins(item: :expense)
-                               .where(user: @user)
-                               .where.not(items: { expenses: { user: @user } })
+    user_as_paid_splits = Split.joins(item: :expense)
+                                .where(items: { expenses: { user: @user } })
+                                .where.not(user: @user)
+
+    @amount_owed_by_users = user_as_paid_splits.group('splits.user_id').sum(:amount)
+  end
+
+  def calculate_net_owed(owed_by, owed_to)
+    net_owed = {}
+
+    owed_by.each do |user_id, amount|
+      net_owed[user_id] = amount - (owed_to[user_id] || 0)
+    end
+
+    net_owed.select { |_, amount| amount > 0 }
   end
 
   def decorated_list(owed_amounts)
