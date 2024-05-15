@@ -44,7 +44,7 @@ class SettlementDecorator
         @paid_to = @friend
       end
     else
-      total_owed_amount = 0
+      @total_owed_amount = 0
       @user_dropdown_options = user_with_friends
       @paid_by = @user
       @paid_to = @user.friends.first
