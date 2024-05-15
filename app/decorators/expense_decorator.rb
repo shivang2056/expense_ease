@@ -1,49 +1,32 @@
 class ExpenseDecorator
   def initialize(user)
     @user = user
+    @expense_fetcher = GroupedExpenseFetcher.new(@user)
   end
 
   def self.decorate(user)
     self.new(user)
   end
 
-  # Todo: Look for possible Refactor
   def involved_expenses
-    expenses = Expense.where(user: @user)
-                      .or(Expense.where(splits: { user: @user }))
-                      .joins(:splits)
-                      .distinct
-                      .order(created_at: :desc)
+    grouped_expenses = @expense_fetcher.involved_expenses_with_user
 
-    grouped_expenses = expenses.group_by { |record| record.created_at.strftime("%B %Y") }
-
-    grouped_expenses.map do |month_year, expenses|
-      [ month_year, expense_data(expenses) ]
-    end
+    decorated_expenses(grouped_expenses)
   end
 
-  # Todo: Look for possible Refactor
   def involved_expenses_with(friend)
-    expenses = Expense.where(user: [@user, friend])
-                      .or(Expense.where(splits: { user: [@user, friend] }))
-                      .joins(:splits)
-                      .distinct
-                      .order(created_at: :desc)
+    grouped_expenses = @expense_fetcher.involved_expenses_with_user_and_friend(friend)
 
-    expenses = expenses.select do |expense|
-      paid_by_current_user?(expense) && expense.splits.where(user: friend).exists? ||
-      expense.user_id == friend.id && expense.splits.where(user: @user).exists? ||
-      expense.splits.where(user: friend).exists? && expense.splits.where(user: @user).exists?
-    end
-
-    grouped_expenses = expenses.group_by { |record| record.created_at.strftime("%B %Y") }
-
-    grouped_expenses.map do |month_year, expenses|
-      [ month_year, expense_data(expenses, friend: friend) ]
-    end
+    decorated_expenses(grouped_expenses, friend: friend)
   end
 
   private
+
+  def decorated_expenses(expenses, friend: nil)
+    expenses.map do |month_year, expenses|
+      [ month_year, expense_data(expenses, friend: friend) ]
+    end
+  end
 
   def expense_data(expenses, friend: nil)
     expenses.map do |expense|
@@ -94,10 +77,11 @@ class ExpenseDecorator
   end
 
   def more_than_1_participants?(expense)
-    non_user_splits(expense).pluck(:user_id).uniq.count > 1
+    non_user_splits(expense).distinct.count(:user_id) > 1
   end
 
   def non_user_splits(expense)
-    @_splits ||= expense.splits.where.not(splits: {user: @user})
+    @_splits ||= {}
+    @_splits[expense.id] ||= expense.splits.where.not(splits: {user: @user})
   end
 end
