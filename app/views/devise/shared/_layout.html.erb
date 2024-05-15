@@ -1,0 +1,20 @@
+<div class="flex min-h-screen bg-gray-50">
+  <div class="w-1/2 flex items-center justify-center bg-gray-200">
+    <h1 class="text-4xl font-bold text-gray-800">Expense Ease</h1>
+  </div>
+  <div class="w-1/2 flex items-center justify-center">
+    <div class="w-1/2">
+      <div class="p-6 border-2 rounded-md">
+        <% if title.present? %>
+          <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center mt-4"><%= title %></h2>
+        <% end %>
+
+        <%= yield %>
+
+        <div class="px-8 pb-8">
+          <%= render "devise/shared/links" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

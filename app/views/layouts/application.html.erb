@@ -11,10 +11,19 @@
   </head>
 
   <body class="font-sans">
-    <%= render "shared/navbar" %>
+    <header>
+      <% if notice %>
+        <p class="bg-gray-400 px-2 py-4 mx-auto font-sans font-medium text-center text-white"><%= notice %></p>
+      <% end %>
 
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+      <% if alert %>
+        <p class="bg-gray-600 px-2 py-4 mx-auto font-sans font-medium text-center text-white"><%= alert %></p>
+      <% end %>
+    </header>
+
+    <% if user_signed_in? && !( params[:controller] == 'devise/registrations' && params[:action] == 'edit' ) %>
+      <%= render "shared/navbar" %>
+    <% end %>
 
     <%= yield %>
 

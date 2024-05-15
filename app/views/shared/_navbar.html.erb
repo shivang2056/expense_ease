@@ -8,7 +8,7 @@
     </div>
     <div class="rounded-full border p-2 flex justify-between">
       <div class="inline-block">
-        <a href="#" class="px-4 py-2 hover:text-gray-900 rounded">My Account</a>
+        <%= link_to 'My Account', edit_user_registration_path, class: 'px-4 py-2 hover:text-gray-900 rounded' %>
         <%= link_to "Sign Out", destroy_user_session_path, class: "px-4 py-2 hover:text-gray-900 rounded", data: { turbo_method: :delete } %>
       </div>
     </div>
